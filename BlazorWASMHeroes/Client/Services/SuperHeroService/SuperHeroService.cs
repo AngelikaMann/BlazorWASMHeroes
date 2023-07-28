@@ -17,6 +17,26 @@ namespace BlazorWASMHeroes.Client.Services.SuperHeroService
         public List<SuperHero> Heroes { get; set; } = new List<SuperHero>();
         public List<Comic> Comics { get; set; } = new List<Comic>();
 
+        public async Task CreateHero(SuperHero hero)
+        {
+            var result = await _http.PostAsJsonAsync("api/superhero", hero);
+            await SetHeroes(result);
+
+        }
+
+        private async Task SetHeroes(HttpResponseMessage result)
+        {
+            var response = await result.Content.ReadFromJsonAsync<List<SuperHero>>();
+            Heroes = response;
+            _navigationManager.NavigateTo("superheroes");
+        }
+
+        public async Task DeleteHero(int id)
+        {
+            var result = await _http.DeleteAsync($"api/superhero/{id}");
+            await SetHeroes(result);
+        }
+
         public async Task GetComics()
         {
             var result = await _http.GetFromJsonAsync<List<Comic>>("api/superhero/comics");
@@ -39,19 +59,10 @@ namespace BlazorWASMHeroes.Client.Services.SuperHeroService
                 Heroes = result;
         }
 
-        //public Task CreateHero(SuperHero hero)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        //public Task UpdateHero(SuperHero hero)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        //public Task DeleteHero(int id)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        public async Task UpdateHero(SuperHero hero)
+        {
+            var result = await _http.PutAsJsonAsync($"api/superhero/{hero.Id}", hero);
+            await SetHeroes(result);
+        }
     }
 }

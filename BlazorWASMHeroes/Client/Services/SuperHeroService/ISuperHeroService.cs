@@ -8,8 +8,8 @@
         Task GetComics();
         Task GetSuperHeroes();
         Task<SuperHero> GetSingleHero(int id);
-        //Task CreateHero(SuperHero hero);
-        //Task UpdateHero(SuperHero hero);
-        //Task DeleteHero(int id);
+        Task CreateHero(SuperHero hero);
+        Task UpdateHero(SuperHero hero);
+        Task DeleteHero(int id);
     }
 }
